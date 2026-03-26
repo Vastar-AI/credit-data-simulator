@@ -2,7 +2,15 @@
 
 Multi-service credit data pipeline simulator built with Rust and axum. Provides realistic Indonesian banking credit data with NDJSON bulk export, field mapping, validation rules, and regulatory submission endpoints.
 
-Built primarily for benchmarking [VIL (Vastar Intermediate Language)](https://github.com/OceanOS-id/VIL) NDJSON pipeline examples (005, 007-009, 101-107). These numbers establish the simulator baseline — any overhead measured through VIL is VIL's own processing cost. Also usable as a standalone mock for any credit/banking data integration testing.
+**Purpose: Benchmarking and overhead measurement.** This simulator provides a known-performance baseline (NDJSON: ~2K req/s = 191K records/sec, JSON: ~10.5K req/s = 1M records/sec) so you can accurately measure the processing overhead of any application consuming the data. By comparing direct simulator throughput vs throughput through your application, you isolate exactly how much latency and cost your transform/validation logic adds.
+
+```
+Direct (baseline):   oha -c 200 -n 2000 'http://localhost:18081/api/v1/credits/ndjson?page_size=100'  → X req/s
+Via your app:        oha -c 200 -n 2000 'http://localhost:3080/trigger'                                → Y req/s
+Your app overhead:   (X - Y) / X × 100%
+```
+
+Built primarily for [VIL (Vastar Intermediate Language)](https://github.com/OceanOS-id/VIL) NDJSON pipeline examples (005, 007-009, 101-107). Also usable as a standalone mock for any credit/banking data integration testing. Supports deterministic seed-based data generation for reproducible benchmarks (see [GUIDE.md](./GUIDE.md)).
 
 ## Services
 
