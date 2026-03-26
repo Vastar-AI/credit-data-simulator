@@ -1,0 +1,12 @@
+/target/
+*.swp
+*.swo
+*~
+.DS_Store
+.env
+simulator.log
+
+# Generated data files — use /api/v1/credits/generate to create at runtime
+*.ndjson
+credits_*.json
+batch_*.json
