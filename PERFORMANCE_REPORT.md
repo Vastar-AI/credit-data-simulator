@@ -11,32 +11,32 @@ Built for benchmarking [VIL (Vastar Intermediate Language)](https://github.com/O
 
 ## Per-Endpoint Results (c200, n2000)
 
-| Endpoint | Description | req/s | P50 | P99 | Success |
-|----------|-------------|-------|-----|-----|---------|
-| `GET /health` | Health check | **52,744** | 0.3ms | 27ms | 100% |
-| `GET /api/v1/credits?page_size=100` | JSON paginated (100 rec) | **10,591** | 16ms | 24ms | 100% |
-| `GET /api/v1/credits/ndjson?page_size=100` | NDJSON stream (100 rec) | **1,910** | 96ms | 202ms | 100% |
-| `GET /api/v1/credits/ndjson?page_size=1000` | NDJSON stream (1000 rec) | **1,935** | 97ms | 190ms | 100% |
-| `GET /api/v1/mappings/v1/fields` | Mapping fields | **62,347** | 0.5ms | 23ms | 100% |
-| `GET /api/v1/rulepacks/v1/rules` | Validation rules | **73,154** | 0.3ms | 21ms | 100% |
+| Endpoint | Description | req/s | records/s | P50 | P99 | Success |
+|----------|-------------|-------|-----------|-----|-----|---------|
+| `GET /health` | Health check | **52,744** | — | 0.3ms | 27ms | 100% |
+| `GET /credits?page_size=100` | JSON paginated (100 rec) | **10,591** | **1,059K** | 16ms | 24ms | 100% |
+| `GET /credits/ndjson?page_size=100` | NDJSON stream (100 rec) | **1,910** | **191K** | 96ms | 202ms | 100% |
+| `GET /credits/ndjson?page_size=1000` | NDJSON stream (1000 rec) | **1,935** | **1,935K** | 97ms | 190ms | 100% |
+| `GET /mappings/v1/fields` | Mapping fields | **62,347** | — | 0.5ms | 23ms | 100% |
+| `GET /rulepacks/v1/rules` | Validation rules | **73,154** | — | 0.3ms | 21ms | 100% |
 
 ---
 
 ## Scaling — NDJSON (100 records/page)
 
-| Concurrent | Total Req | req/s | P50 | P99 | P99.9 | Slowest | Success |
-|-----------|-----------|-------|-----|-----|-------|---------|---------|
-| 200 | 2,000 | 1,910 | 96ms | 202ms | 216ms | 216ms | 100% |
-| 500 | 5,000 | 1,963 | 236ms | 535ms | 1.0s | 1.0s | 100% |
-| 1,000 | 10,000 | 2,004 | 459ms | 2.1s | 2.3s | 2.3s | 100% |
+| Concurrent | Total Req | req/s | records/s | P50 | P99 | P99.9 | Success |
+|-----------|-----------|-------|-----------|-----|-----|-------|---------|
+| 200 | 2,000 | 1,910 | **191K** | 96ms | 202ms | 216ms | 100% |
+| 500 | 5,000 | 1,963 | **196K** | 236ms | 535ms | 1.0s | 100% |
+| 1,000 | 10,000 | 2,004 | **200K** | 459ms | 2.1s | 2.3s | 100% |
 
 ## Scaling — JSON Paginated (100 records/page)
 
-| Concurrent | Total Req | req/s | P50 | P99 | P99.9 | Slowest | Success |
-|-----------|-----------|-------|-----|-----|-------|---------|---------|
-| 200 | 2,000 | 10,591 | 16ms | 24ms | 35ms | 35ms | 100% |
-| 500 | 5,000 | 10,500 | 43ms | 64ms | 80ms | 85ms | 100% |
-| 1,000 | 10,000 | 10,776 | 87ms | 98ms | 109ms | 121ms | 100% |
+| Concurrent | Total Req | req/s | records/s | P50 | P99 | P99.9 | Success |
+|-----------|-----------|-------|-----------|-----|-----|-------|---------|
+| 200 | 2,000 | 10,591 | **1,059K** | 16ms | 24ms | 35ms | 100% |
+| 500 | 5,000 | 10,500 | **1,050K** | 43ms | 64ms | 80ms | 100% |
+| 1,000 | 10,000 | 10,776 | **1,078K** | 87ms | 98ms | 109ms | 100% |
 
 ---
 

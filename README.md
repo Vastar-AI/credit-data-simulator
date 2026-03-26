@@ -79,16 +79,16 @@ The `run_simulator.sh` script auto-kills any processes on ports 18081-18084 befo
 
 **System:** Intel i9-11900F (8C/16T), 32GB RAM, Ubuntu 22.04, Rust 1.93.1
 
-| Endpoint | req/s | P50 | P99 | Notes |
-|----------|-------|-----|-----|-------|
-| Health check | 52,744 | 0.3ms | 27ms | Baseline |
-| JSON 100 rec/page | 10,591 | 16ms | 24ms | Pre-serialized array |
-| NDJSON 100 rec/page | 1,910 | 96ms | 202ms | Per-line streaming |
-| NDJSON 1000 rec/page | 1,935 | 97ms | 190ms | Throughput same, larger payload |
-| Mapping fields | 62,347 | 0.5ms | 23ms | In-memory lookup |
-| Rulepack rules | 73,154 | 0.3ms | 21ms | In-memory lookup |
+| Endpoint | req/s | records/s | P50 | P99 | Notes |
+|----------|-------|-----------|-----|-----|-------|
+| Health check | 52,744 | — | 0.3ms | 27ms | Baseline |
+| JSON 100 rec/page | 10,591 | **1,059K** | 16ms | 24ms | Pre-serialized array |
+| NDJSON 100 rec/page | 1,910 | **191K** | 96ms | 202ms | Per-line streaming |
+| NDJSON 1000 rec/page | 1,935 | **1,935K** | 97ms | 190ms | 10x records, same req/s |
+| Mapping fields | 62,347 | — | 0.5ms | 23ms | In-memory lookup |
+| Rulepack rules | 73,154 | — | 0.3ms | 21ms | In-memory lookup |
 
-**NDJSON raw throughput: ~200K records/sec** (2K req/s x 100 records/req).
+**NDJSON throughput: ~191K records/sec** (100 rec/page) or **~1.9M records/sec** (1000 rec/page).
 
 Full benchmark: [PERFORMANCE_REPORT.md](./PERFORMANCE_REPORT.md)
 
