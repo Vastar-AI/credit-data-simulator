@@ -5,6 +5,10 @@ edition = "2021"
 license = "MIT OR Apache-2.0"
 description = "Credit data pipeline simulator — Core Banking, Mapping, Rulepack, Regulator (OJK)"
 repository = "https://github.com/Vastar-AI/credit-data-simulator"
+homepage = "https://vastar.id"
+readme = "README.md"
+keywords = ["credit", "simulator", "banking", "ndjson", "benchmark"]
+categories = ["development-tools::testing", "simulation"]
 
 [dependencies]
 axum = { version = "0.7", features = ["tokio", "json"] }
