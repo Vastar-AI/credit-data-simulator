@@ -1,29 +1,27 @@
 # =============================================================================
-# Credit Data Simulator — Multi-stage build
+# Credit Data Simulator — Multi-stage build (static musl binary)
 # =============================================================================
 
 FROM rust:1.93-slim AS builder
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y \
-    build-essential pkg-config libssl-dev \
-    && rm -rf /var/lib/apt/lists/*
+    build-essential pkg-config musl-tools \
+    && rm -rf /var/lib/apt/lists/* \
+    && rustup target add x86_64-unknown-linux-musl
 
 COPY Cargo.toml Cargo.lock ./
 COPY src ./src
 
-# Build for native target (not musl — avoids OpenSSL cross-compile issues)
-RUN cargo build --release
+RUN CC=musl-gcc cargo build --release --target x86_64-unknown-linux-musl
 
-# Runtime — Debian slim (small, has glibc + SSL)
-FROM debian:bookworm-slim
+# Runtime — Alpine (tiny)
+FROM alpine:3.19
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates libssl3 \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache ca-certificates
 
-COPY --from=builder /app/target/release/credit-data-simulator ./
+COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/credit-data-simulator ./
 
 EXPOSE 18081
 CMD ["./credit-data-simulator"]
